@@ -37,6 +37,25 @@ docker compose --env-file .env.local up --build
 # open http://localhost:8081
 ```
 
+## Deploy the frontend to Vercel
+
+The Vercel project should use `frontend/` as its Root Directory. The Vercel settings
+in `frontend/vercel.json` install development dependencies (including Vite), build
+the app, publish `dist/`, and route the client-side pages to the React app.
+
+Vercel hosts only the frontend; deploy `backend/node` separately with a reachable
+PostgreSQL database. Set these frontend environment variables in Vercel:
+
+- `VITE_API_URL` to the API base URL ending in `/api` (for example,
+  `https://api.example.com/api`).
+- `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
+  `VITE_FIREBASE_PROJECT_ID`, and `VITE_FIREBASE_APP_ID`.
+- `VITE_NEON_REALTIME_URL` if using Neon Realtime.
+
+Configure the API's `CORS_ORIGIN` to include the Vercel site origin. Keep Firebase
+Admin credentials and database secrets on the API host; never add them as `VITE_`
+variables.
+
 ## Run locally for development
 You need Node 20+, Python 3.11+ and a linked Neon project.
 
