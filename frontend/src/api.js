@@ -28,7 +28,22 @@ async function request(path, { method = "GET", body, signal, blob = false } = {}
         if (!response.ok) throw new ApiError(response.status, "Could not download the file.");
         return response.blob();
     }
-    const data = await response.json().catch(() => ({}));
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.toLowerCase().includes("json")) {
+        const status = response.ok ? 502 : response.status;
+        throw new ApiError(
+            status,
+            "The API returned a web page instead of JSON. Set VITE_API_URL to your deployed backend URL ending in /api."
+        );
+    }
+
+    let data;
+    try {
+        data = await response.json();
+    } catch {
+        const status = response.ok ? 502 : response.status;
+        throw new ApiError(status, "The API returned invalid JSON. Check the backend response.");
+    }
     if (!response.ok) throw new ApiError(response.status, data.error || "Something went wrong.", data.fields);
     return data;
 }
