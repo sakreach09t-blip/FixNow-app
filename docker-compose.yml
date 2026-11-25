@@ -1,0 +1,47 @@
+# Run: docker compose --env-file .env.local up --build
+services:
+  python:
+    build: ./backend/python
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/node/Dockerfile
+    env_file:
+      - .env.local
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      PYTHON_URL: http://python:8000
+      CORS_ORIGIN: "${CORS_ORIGIN:-http://localhost:8080,http://localhost:5173}"
+    depends_on:
+      python:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:4000/api/health', r => r.statusCode === 200 ? process.exit(0) : process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_NEON_AUTH_URL: ${NEON_AUTH_BASE_URL:?Set NEON_AUTH_BASE_URL in .env.local}
+        VITE_NEON_REALTIME_URL: ${NEON_REALTIME_URL:?Set NEON_REALTIME_URL in .env.local}
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+

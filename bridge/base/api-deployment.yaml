@@ -1,0 +1,43 @@
+#! api-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: api
+    namespace: fixnow-app
+    labels:
+        com.docker.compose.project: fixnow-app
+        com.docker.compose.service: api
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: fixnow-app
+            com.docker.compose.service: api
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: fixnow-app
+                com.docker.compose.service: api
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: api
+                  image: fixnow-app-api
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: CORS_ORIGIN
+                      value: "http://localhost:8080"
+                    - name: DATABASE_URL
+                      value: "postgres://fixnow:fixnow@db:5432/fixnow"
+                    - name: JWT_SECRET
+                      value: "change-me-before-going-live"
+                    - name: NODE_ENV
+                      value: "production"
+                    - name: PYTHON_URL
+                      value: "http://python:8000"
+                  ports:
+                    - name: api-4000
+                      containerPort: 4000

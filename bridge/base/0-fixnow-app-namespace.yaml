@@ -1,0 +1,8 @@
+#! 0-fixnow-app-namespace.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: fixnow-app
+    labels:
+        com.docker.compose.project: fixnow-app

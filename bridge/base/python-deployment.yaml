@@ -1,0 +1,32 @@
+#! python-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: python
+    namespace: fixnow-app
+    labels:
+        com.docker.compose.project: fixnow-app
+        com.docker.compose.service: python
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: fixnow-app
+            com.docker.compose.service: python
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: fixnow-app
+                com.docker.compose.service: python
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: python
+                  image: fixnow-app-python
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                    - name: python-8000
+                      containerPort: 8000

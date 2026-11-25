@@ -1,0 +1,594 @@
+{
+  "contact": {
+    "email": "support@fixnow.example",
+    "phone": "+855 12 345 678",
+    "city": "Phnom Penh, Cambodia",
+    "hours": "Monday to Saturday, 7:00 to 19:00"
+  },
+  "districts": [
+    "Boeng Keng Kang",
+    "Chamkar Mon",
+    "Chbar Ampov",
+    "Chroy Changvar",
+    "Dangkao",
+    "Daun Penh",
+    "Mean Chey",
+    "Pou Senchey",
+    "Prampir Meakkakra",
+    "Russey Keo",
+    "Sen Sok",
+    "Tuol Kork"
+  ],
+  "slots": [
+    {
+      "id": "08-10",
+      "label": "8:00 – 10:00",
+      "start": 8,
+      "end": 10
+    },
+    {
+      "id": "10-12",
+      "label": "10:00 – 12:00",
+      "start": 10,
+      "end": 12
+    },
+    {
+      "id": "13-15",
+      "label": "1:00 – 3:00 PM",
+      "start": 13,
+      "end": 15
+    },
+    {
+      "id": "15-17",
+      "label": "3:00 – 5:00 PM",
+      "start": 15,
+      "end": 17
+    },
+    {
+      "id": "17-19",
+      "label": "5:00 – 7:00 PM",
+      "start": 17,
+      "end": 19
+    }
+  ],
+  "services": [
+    {
+      "id": "ac",
+      "name": "Air Conditioning",
+      "icon": "ac_unit",
+      "short": "Keep your home comfortable with AC maintenance and repairs.",
+      "long": "From a unit that blows warm air to a new split system for the bedroom, AC technicians handle cleaning, gas checks, repairs and installation so your home stays cool through the hot season.",
+      "includes": [
+        "Filter and coil cleaning",
+        "Gas pressure check and refill",
+        "Split-unit installation and relocation",
+        "Leak, noise and cooling-fault diagnosis"
+      ],
+      "jobs": [
+        "AC not cooling",
+        "Water dripping from indoor unit",
+        "Annual servicing",
+        "New unit installation"
+      ]
+    },
+    {
+      "id": "handyman",
+      "name": "General Handyman",
+      "icon": "handyman",
+      "short": "Get help with household fixes, assembly, and installations.",
+      "long": "One person for the small jobs that pile up: mounting a TV, fixing a loose hinge, assembling a wardrobe or patching a wall. Ideal when you have a list of little repairs rather than one big project.",
+      "includes": [
+        "Furniture and shelf assembly",
+        "TV, mirror and curtain-rail mounting",
+        "Door, hinge and lock adjustments",
+        "Minor wall repairs and touch-ups"
+      ],
+      "jobs": [
+        "Hang shelves and frames",
+        "Fix a sticking door",
+        "Assemble flat-pack furniture",
+        "Small repair list"
+      ]
+    },
+    {
+      "id": "electrical",
+      "name": "Electrical",
+      "icon": "electric_bolt",
+      "short": "Find help with wiring, lighting, and electrical repairs.",
+      "long": "Licensed-minded electricians for safe, tidy work on sockets, lights, circuits and breaker boards. Describe the fault when you book so the technician arrives with the right parts.",
+      "includes": [
+        "Light and fan installation",
+        "Socket and switch repair",
+        "Circuit and breaker troubleshooting",
+        "Wiring checks for older homes"
+      ],
+      "jobs": [
+        "Tripping breaker",
+        "Dead socket or switch",
+        "New lighting points",
+        "Fan installation"
+      ]
+    },
+    {
+      "id": "carpentry",
+      "name": "Carpentry & Furniture",
+      "icon": "chair",
+      "short": "Repair, install, or assemble furniture and woodwork.",
+      "long": "Skilled woodwork for repairs and custom pieces: doors that no longer close, cabinets that need hanging, or shelving built to fit an awkward corner.",
+      "includes": [
+        "Door and window frame fitting",
+        "Cabinet and wardrobe installation",
+        "Furniture repair and refinishing",
+        "Custom shelves and storage"
+      ],
+      "jobs": [
+        "Door won't close",
+        "Install kitchen cabinets",
+        "Repair a wooden table",
+        "Built-in shelving"
+      ]
+    },
+    {
+      "id": "plumbing",
+      "name": "Plumbing",
+      "icon": "plumbing",
+      "short": "Fix leaks, blocked drains and water-system problems fast.",
+      "long": "Plumbers who find the source of a leak, clear stubborn drains and install taps, toilets and water pumps. Turn off the water at the main valve if a pipe is actively leaking and book the earliest slot.",
+      "includes": [
+        "Pipe and tap repair",
+        "Drain unblocking and cleaning",
+        "Toilet, basin and shower installation",
+        "Water pump and heater fitting"
+      ],
+      "jobs": [
+        "Leaking tap or pipe",
+        "Blocked sink or toilet",
+        "Low water pressure",
+        "Install a water heater"
+      ]
+    },
+    {
+      "id": "painting",
+      "name": "Painting & Wall Repair",
+      "icon": "format_paint",
+      "short": "Refresh rooms with clean, careful painting and wall patching.",
+      "long": "Interior and exterior painting with proper preparation: patching cracks, sanding and priming before the colour goes on, so the finish lasts.",
+      "includes": [
+        "Interior and exterior painting",
+        "Crack and hole patching",
+        "Surface preparation and priming",
+        "Feature walls and touch-ups"
+      ],
+      "jobs": [
+        "Repaint a bedroom",
+        "Cover water stains",
+        "Exterior wall refresh",
+        "Touch-ups after repairs"
+      ]
+    },
+    {
+      "id": "appliance",
+      "name": "Appliance Repair",
+      "icon": "kitchen",
+      "short": "Get washing machines, fridges and small appliances working again.",
+      "long": "Diagnosis and repair for everyday appliances before you consider replacing them. Tell the technician the brand, model and symptoms when you book.",
+      "includes": [
+        "Washing machine repair",
+        "Refrigerator and freezer checks",
+        "Microwave, rice cooker and fan repair",
+        "Fault diagnosis and part replacement"
+      ],
+      "jobs": [
+        "Washer won't drain",
+        "Fridge not cooling",
+        "Appliance trips the power",
+        "Strange noise or smell"
+      ]
+    },
+    {
+      "id": "waterproofing",
+      "name": "Roofing & Waterproofing",
+      "icon": "roofing",
+      "short": "Stop roof leaks and damp before the rainy season does damage.",
+      "long": "Find and seal leaks in roofs, terraces and bathrooms. Best booked before the rainy season, or as soon as you spot a stain spreading across a ceiling.",
+      "includes": [
+        "Roof leak inspection and sealing",
+        "Terrace and bathroom waterproofing",
+        "Gutter and drainage clearing",
+        "Damp-wall treatment"
+      ],
+      "jobs": [
+        "Ceiling stain after rain",
+        "Leaking terrace",
+        "Damp bathroom wall",
+        "Pre-rainy-season check"
+      ]
+    }
+  ],
+  "technicians": [
+    {
+      "id": "sok-dara",
+      "name": "Sok Dara",
+      "trade": "Electrician",
+      "services": [
+        "electrical"
+      ],
+      "skills": "Electrical installation, wiring, troubleshooting",
+      "provides": [
+        "Light installation",
+        "Socket repair",
+        "Circuit repair"
+      ],
+      "price": 10,
+      "status": "available",
+      "rating": 4.8,
+      "jobs": 126,
+      "years": 7,
+      "areas": [
+        "Chamkar Mon",
+        "Boeng Keng Kang",
+        "Daun Penh",
+        "Prampir Meakkakra"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Sok Dara focuses on safe, tidy electrical work for apartments and shophouses, from replacing a socket to tracing a tripping breaker."
+    },
+    {
+      "id": "vannak-chea",
+      "name": "Vannak Chea",
+      "trade": "Plumber",
+      "services": [
+        "plumbing"
+      ],
+      "skills": "Pipe installation, water systems, leak detection",
+      "provides": [
+        "Pipe repair",
+        "Faucet installation",
+        "Drain cleaning"
+      ],
+      "price": 12,
+      "status": "available",
+      "rating": 4.7,
+      "jobs": 98,
+      "years": 6,
+      "areas": [
+        "Tuol Kork",
+        "Sen Sok",
+        "Russey Keo"
+      ],
+      "languages": [
+        "Khmer"
+      ],
+      "bio": "Vannak specialises in finding hidden leaks and fixing them without tearing up more of the wall than necessary."
+    },
+    {
+      "id": "pisey-sok",
+      "name": "Pisey Sok",
+      "trade": "AC Technician",
+      "services": [
+        "ac"
+      ],
+      "skills": "AC maintenance, installation, cooling systems",
+      "provides": [
+        "AC cleaning",
+        "Gas checking",
+        "AC repair"
+      ],
+      "price": 15,
+      "status": "busy",
+      "rating": 4.9,
+      "jobs": 211,
+      "years": 9,
+      "areas": [
+        "Chamkar Mon",
+        "Mean Chey",
+        "Chbar Ampov",
+        "Daun Penh"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Pisey has serviced and installed split and cassette systems across the city and is in high demand during the hot season."
+    },
+    {
+      "id": "rithy-chan",
+      "name": "Rithy Chan",
+      "trade": "Carpenter",
+      "services": [
+        "carpentry"
+      ],
+      "skills": "Furniture assembly, woodwork, door installation",
+      "provides": [
+        "Furniture repair",
+        "Cabinet and door installation"
+      ],
+      "price": 18,
+      "status": "available",
+      "rating": 4.8,
+      "jobs": 74,
+      "years": 8,
+      "areas": [
+        "Boeng Keng Kang",
+        "Chroy Changvar",
+        "Russey Keo"
+      ],
+      "languages": [
+        "Khmer"
+      ],
+      "bio": "Rithy repairs and builds wooden furniture, doors and cabinets with careful measuring and clean finishing."
+    },
+    {
+      "id": "mengly-kim",
+      "name": "Mengly Kim",
+      "trade": "General Handyman",
+      "services": [
+        "handyman",
+        "painting"
+      ],
+      "skills": "General maintenance, painting, household repairs",
+      "provides": [
+        "Wall painting",
+        "Furniture fixing",
+        "Home repairs"
+      ],
+      "price": 10,
+      "status": "available",
+      "rating": 4.6,
+      "jobs": 152,
+      "years": 5,
+      "areas": [
+        "Daun Penh",
+        "Tuol Kork",
+        "Sen Sok",
+        "Prampir Meakkakra"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Mengly is the person to call when you have a list of small jobs: patching, painting, mounting and fixing things around the home."
+    },
+    {
+      "id": "sreymom-heng",
+      "name": "Sreymom Heng",
+      "trade": "Plumber",
+      "services": [
+        "plumbing"
+      ],
+      "skills": "Bathroom plumbing, water pumps, water heaters",
+      "provides": [
+        "Toilet and basin installation",
+        "Water pump repair",
+        "Water heater fitting"
+      ],
+      "price": 14,
+      "status": "available",
+      "rating": 4.9,
+      "jobs": 87,
+      "years": 6,
+      "areas": [
+        "Chamkar Mon",
+        "Boeng Keng Kang",
+        "Mean Chey"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Sreymom handles bathroom and kitchen plumbing jobs and is known for leaving the work area spotless."
+    },
+    {
+      "id": "bunthoeun-ly",
+      "name": "Bunthoeun Ly",
+      "trade": "AC Technician",
+      "services": [
+        "ac"
+      ],
+      "skills": "Split-unit installation, gas refill, deep cleaning",
+      "provides": [
+        "Deep AC cleaning",
+        "Gas refill",
+        "New unit installation"
+      ],
+      "price": 12,
+      "status": "available",
+      "rating": 4.7,
+      "jobs": 133,
+      "years": 5,
+      "areas": [
+        "Sen Sok",
+        "Tuol Kork",
+        "Pou Senchey",
+        "Dangkao"
+      ],
+      "languages": [
+        "Khmer"
+      ],
+      "bio": "Bunthoeun installs and services residential split units and offers deep cleaning that restores cooling power."
+    },
+    {
+      "id": "chenda-pov",
+      "name": "Chenda Pov",
+      "trade": "Painter",
+      "services": [
+        "painting"
+      ],
+      "skills": "Interior painting, wall preparation, exterior coating",
+      "provides": [
+        "Room repainting",
+        "Crack and hole patching",
+        "Exterior wall painting"
+      ],
+      "price": 15,
+      "status": "available",
+      "rating": 4.8,
+      "jobs": 64,
+      "years": 7,
+      "areas": [
+        "Daun Penh",
+        "Chamkar Mon",
+        "Chbar Ampov"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Chenda prepares every surface properly before painting, so repainted rooms look crisp and stay that way."
+    },
+    {
+      "id": "dararith-meas",
+      "name": "Dararith Meas",
+      "trade": "Appliance Technician",
+      "services": [
+        "appliance"
+      ],
+      "skills": "Washing machines, refrigerators, small appliances",
+      "provides": [
+        "Washing machine repair",
+        "Fridge repair",
+        "Small appliance repair"
+      ],
+      "price": 10,
+      "status": "available",
+      "rating": 4.6,
+      "jobs": 109,
+      "years": 6,
+      "areas": [
+        "Russey Keo",
+        "Tuol Kork",
+        "Chroy Changvar",
+        "Sen Sok"
+      ],
+      "languages": [
+        "Khmer"
+      ],
+      "bio": "Dararith diagnoses appliance faults on the spot and repairs what is worth repairing before suggesting a replacement."
+    },
+    {
+      "id": "sophea-nguon",
+      "name": "Sophea Nguon",
+      "trade": "Electrician",
+      "services": [
+        "electrical"
+      ],
+      "skills": "Breaker panels, lighting design, CCTV power",
+      "provides": [
+        "Breaker panel repair",
+        "Lighting installation",
+        "Fan installation"
+      ],
+      "price": 12,
+      "status": "busy",
+      "rating": 4.7,
+      "jobs": 91,
+      "years": 6,
+      "areas": [
+        "Mean Chey",
+        "Chbar Ampov",
+        "Dangkao",
+        "Pou Senchey"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Sophea works on breaker panels and lighting layouts for homes and small shops."
+    },
+    {
+      "id": "kosal-ouk",
+      "name": "Kosal Ouk",
+      "trade": "Waterproofing Specialist",
+      "services": [
+        "waterproofing"
+      ],
+      "skills": "Roof leak sealing, terrace waterproofing, damp treatment",
+      "provides": [
+        "Roof leak sealing",
+        "Terrace waterproofing",
+        "Damp wall treatment"
+      ],
+      "price": 20,
+      "status": "available",
+      "rating": 4.8,
+      "jobs": 58,
+      "years": 10,
+      "areas": [
+        "Chamkar Mon",
+        "Daun Penh",
+        "Russey Keo",
+        "Mean Chey"
+      ],
+      "languages": [
+        "Khmer"
+      ],
+      "bio": "Kosal traces leaks to their source and seals roofs, terraces and bathrooms before the rains return."
+    },
+    {
+      "id": "vichea-tep",
+      "name": "Vichea Tep",
+      "trade": "Carpenter",
+      "services": [
+        "carpentry"
+      ],
+      "skills": "Custom shelving, wardrobes, wooden flooring",
+      "provides": [
+        "Custom shelving",
+        "Wardrobe installation",
+        "Wooden floor repair"
+      ],
+      "price": 20,
+      "status": "busy",
+      "rating": 4.9,
+      "jobs": 69,
+      "years": 11,
+      "areas": [
+        "Boeng Keng Kang",
+        "Chamkar Mon",
+        "Tuol Kork"
+      ],
+      "languages": [
+        "Khmer",
+        "English"
+      ],
+      "bio": "Vichea builds made-to-measure storage and repairs wooden floors with an eye for detail."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How does FixNow work?",
+      "a": "Search for the service you need, compare technician profiles and starting prices, then book a time that suits you. Your technician arrives at the agreed time to fix the problem."
+    },
+    {
+      "q": "How much does it cost?",
+      "a": "Each technician lists a starting price for a standard visit. The final price depends on the job, and your technician will confirm the quote with you before starting any work."
+    },
+    {
+      "q": "How do I pay?",
+      "a": "You pay your technician directly once the job is finished. Ask about accepted payment methods when you book."
+    },
+    {
+      "q": "Can I cancel or change a booking?",
+      "a": "Yes. Open My Bookings to cancel an upcoming booking, then make a new one for a different time. Please cancel as early as you can so the technician can offer the slot to someone else."
+    },
+    {
+      "q": "Which areas do you cover?",
+      "a": "FixNow currently serves Phnom Penh, including Boeng Keng Kang, Chamkar Mon, Chbar Ampov, Chroy Changvar, Dangkao, Daun Penh, Mean Chey, Pou Senchey, Prampir Meakkakra, Russey Keo, Sen Sok and Tuol Kork."
+    },
+    {
+      "q": "What if my technician is busy?",
+      "a": "Busy technicians cannot be booked until they are available again. Filter the list to show available technicians only, or pick another technician offering the same service."
+    },
+    {
+      "q": "How do I become a technician on FixNow?",
+      "a": "Open Join Us, choose Join as Technician and fill in your skills, experience and the areas you cover. We review every application before a profile goes live."
+    },
+    {
+      "q": "Is my information safe?",
+      "a": "We only use your details to arrange your booking and to contact you about it. Read the Privacy Policy for the full picture."
+    }
+  ]
+}
