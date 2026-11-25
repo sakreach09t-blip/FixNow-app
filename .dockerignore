@@ -9,3 +9,4 @@
 **/.env
 **/.env.local
 .neon
+firebase-debug.log

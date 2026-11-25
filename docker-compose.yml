@@ -15,12 +15,18 @@ services:
       dockerfile: backend/node/Dockerfile
     env_file:
       - .env.local
+    volumes:
+      - type: bind
+        source: "${GOOGLE_APPLICATION_CREDENTIALS:?Set GOOGLE_APPLICATION_CREDENTIALS in .env.local to a local Firebase Admin credential file}"
+        target: /run/secrets/firebase-admin.json
+        read_only: true
     ports:
       - "4000:4000"
     environment:
       NODE_ENV: production
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/firebase-admin.json
       PYTHON_URL: http://python:8000
-      CORS_ORIGIN: "${CORS_ORIGIN:-http://localhost:8080,http://localhost:5173}"
+      CORS_ORIGIN: "${CORS_ORIGIN:-http://localhost:${WEB_PORT:-8081},http://localhost:5173}"
     depends_on:
       python:
         condition: service_healthy
@@ -36,10 +42,13 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
       args:
-        VITE_NEON_AUTH_URL: ${NEON_AUTH_BASE_URL:?Set NEON_AUTH_BASE_URL in .env.local}
         VITE_NEON_REALTIME_URL: ${NEON_REALTIME_URL:?Set NEON_REALTIME_URL in .env.local}
+        VITE_FIREBASE_API_KEY: ${VITE_FIREBASE_API_KEY:?Set VITE_FIREBASE_API_KEY in .env.local}
+        VITE_FIREBASE_AUTH_DOMAIN: ${VITE_FIREBASE_AUTH_DOMAIN:?Set VITE_FIREBASE_AUTH_DOMAIN in .env.local}
+        VITE_FIREBASE_PROJECT_ID: ${VITE_FIREBASE_PROJECT_ID:?Set VITE_FIREBASE_PROJECT_ID in .env.local}
+        VITE_FIREBASE_APP_ID: ${VITE_FIREBASE_APP_ID:?Set VITE_FIREBASE_APP_ID in .env.local}
     ports:
-      - "8080:80"
+      - "${WEB_PORT:-8081}:80"
     depends_on:
       api:
         condition: service_healthy

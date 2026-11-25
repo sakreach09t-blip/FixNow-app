@@ -16,12 +16,12 @@ the transitions and animations now live in React (`src/hooks/motion.jsx`, `Heade
 
 ```
 Browser ──> React (Vite / nginx) ──/api──> Node API ──> Neon PostgreSQL
-   ├────────> Neon Auth
+   ├────────> Firebase Auth
    └────────> Neon Realtime
                                               └────────> Python service
 ```
-Neon Auth manages sign-in and sessions. The Node API verifies its JWTs and maps each Neon identity to the FixNow profile, role and bookings stored in Postgres.
-The browser uses Node for application APIs, Neon Auth for identity and Neon Realtime for live booking updates. Node asks Python for three things:
+Firebase Auth manages sign-in and sessions. The Node API verifies Firebase ID tokens and maps each Firebase UID to the FixNow profile, role and bookings stored in Neon Postgres.
+The browser uses Node for application APIs, Firebase Auth for identity and Neon Realtime for live booking updates. Node asks Python for three things:
 - `POST /rank` typo-tolerant, synonym-aware technician search ("leaking tap" finds plumbers)
 - `POST /validate-booking` date window and "at least 1 hour from now" rules (Phnom Penh time)
 - `POST /ics` builds the calendar file for a booking
@@ -34,7 +34,7 @@ State-changing requests are checked against the configured origin allowlist. Aut
 ```bash
 # .env.local is created by `neon env pull` from the linked project.
 docker compose --env-file .env.local up --build
-# open http://localhost:8080
+# open http://localhost:8081
 ```
 
 ## Run locally for development
@@ -49,7 +49,8 @@ cd backend/python
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload --port 8000  # or 
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 pytest                      # optional tests
 
 # 3. Node API (port 4000). Applies schema and starter data on start.
@@ -64,14 +65,32 @@ npm run dev
 ```
 Open http://localhost:5173.
 
+## Firebase Auth setup
+
+Create a Firebase web app, enable the Email/Password sign-in provider, and add its web configuration to the root `.env.local`:
+
+```dotenv
+FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_API_KEY=your-web-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-firebase-project-id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_APP_ID=your-web-app-id
+# For Docker Compose, use a local credential file outside the repository.
+GOOGLE_APPLICATION_CREDENTIALS=C:/path/to/firebase-admin-credentials.json
+```
+
+The `VITE_` values are public Firebase web-app configuration and are embedded in the frontend build. The Node API verifies ID tokens with Firebase Admin using Application Default Credentials. For local development, configure ADC (for example, with `gcloud auth application-default login`) or point `GOOGLE_APPLICATION_CREDENTIALS` to a service-account file kept outside the repository. Docker Compose mounts that file read-only into the API container, so set its host path in `.env.local` (use a Docker-compatible absolute path on Windows). In production, use the hosting platform's service identity. Never put Admin credentials in frontend variables.
+
+Existing profiles still use Neon for application data and roles. On first sign-in, a Firebase account with a verified email can be linked to a profile previously linked to Neon Auth; otherwise, the user must verify that email or provide their previous FixNow password. Firebase Security Rules do not protect Neon, so all database access and role checks remain in the Node API.
+
 ## API
 | Method | Path | Notes |
 |---|---|---|
 | GET | `/api/meta` | services, districts, time slots, FAQ, contact, stats |
 | GET | `/api/technicians?q=&service=&area=&available=1&sort=&limit=` | `q` is ranked by the Python service |
 | GET | `/api/technicians/:id/slots?date=YYYY-MM-DD` | taken / too-soon slots |
-| POST | `/api/auth/register` | Creates or links the FixNow profile for the signed-in Neon Auth user |
-| GET | `/api/auth/me` | FixNow profile for the signed-in Neon Auth user |
+| POST | `/api/auth/register` | Creates or links the FixNow profile for the signed-in Firebase Auth user |
+| GET | `/api/auth/me` | FixNow profile for the signed-in Firebase Auth user |
 | POST | `/api/bookings` | guest or signed in. A unique index stops double-booking |
 | GET | `/api/bookings` | signed-in user's bookings |
 | GET | `/api/bookings/live` | Sealed Neon Realtime query scoped to the signed-in user's bookings |
@@ -98,14 +117,10 @@ RETURNING id, email, role;
 
 The dashboard lists registered accounts separately from public technician listings. Suspensions end at the selected date and time. Account deletion anonymizes the account and linked booking contact details; hiding a technician listing preserves its booking history. The booking-value summary is an estimate based on confirmed bookings' listed starting prices, not recorded payments.
 
-## Neon Auth migration
-
-Email/password sign-in and sessions are handled by Neon Auth. FixNow still stores application-specific roles and profiles in its `users` table. Existing profile data can be linked when the user signs up with the same email and supplies their previous FixNow password; the legacy password hash is cleared after linking. Otherwise, a new FixNow profile is created. Existing local JWT sessions must sign in again.
-
-The backend loads generated Neon values from the root `.env.local`, uses the pooled `DATABASE_URL` for normal requests and the direct `DATABASE_URL_UNPOOLED` for schema migrations. The frontend receives only the public Neon Auth and Realtime URLs.
+The backend loads generated Neon values from the root `.env.local`, uses the pooled `DATABASE_URL` for normal requests and the direct `DATABASE_URL_UNPOOLED` for schema migrations. The frontend receives only public Firebase web configuration and the Neon Realtime URL.
 
 ## Before going live
-- Add the production frontend origin to Neon Auth's trusted domains and configure production email delivery.
+- Add the production frontend domain to Firebase Authentication's authorized domains and configure production email delivery.
 - Add Neon AI Gateway credits to enable model inference.
 - Technician ratings, job counts and bios in `db/seed-data.json` are sample data. Contact details are placeholders.
 - Privacy and Terms pages are template text and need a legal review.

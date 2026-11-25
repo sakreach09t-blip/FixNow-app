@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => {
     return {
         envDir: projectRoot,
         define: {
-            "import.meta.env.VITE_NEON_AUTH_URL": JSON.stringify(env.VITE_NEON_AUTH_URL || env.NEON_AUTH_BASE_URL || ""),
             "import.meta.env.VITE_NEON_REALTIME_URL": JSON.stringify(env.VITE_NEON_REALTIME_URL || env.NEON_REALTIME_URL || "")
         },
         plugins: [react()],

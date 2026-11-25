@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, updateProfile } from "@firebase/auth";
 import { ApiError, api } from "../api.js";
-import { authClient } from "../auth.js";
+import { auth, requireFirebaseAuth } from "../auth.js";
 
 const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
@@ -11,47 +12,52 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         let active = true;
-        const restoreSession = async () => {
+        if (!auth) {
+            setReady(true);
+            return () => { active = false; };
+        }
+
+        const restoreSession = async (firebaseUser) => {
             try {
-                const { data, error } = await authClient.getSession();
-                if (error) throw new Error(error.message);
-                if (data?.session) {
+                if (firebaseUser) {
                     const profile = await api.me();
                     if (active) setUser(profile.user);
+                } else if (active) {
+                    setUser(null);
                 }
             } catch (error) {
-                if (error instanceof ApiError && error.status === 401) {
+                if (error instanceof ApiError && [401, 403].includes(error.status)) {
                     if (active) setUser(null);
                 } else {
-                    console.error("Could not restore the Neon Auth session:", error);
+                    console.error("Could not restore the Firebase Auth session:", error);
                 }
             } finally {
                 if (active) setReady(true);
             }
         };
-        restoreSession();
-        return () => { active = false; };
+
+        const unsubscribe = onAuthStateChanged(auth, restoreSession);
+        return () => {
+            active = false;
+            unsubscribe();
+        };
     }, []);
 
     const value = useMemo(() => ({
         user, ready,
         login: async (email, password) => {
-            const result = await authClient.signIn.email({ email, password });
-            if (result.error) throw new Error(result.error.message);
+            await signInWithEmailAndPassword(requireFirebaseAuth(), email, password);
             const profile = await api.me();
             setUser(profile.user);
             return profile.user;
         },
         register: async (payload) => {
-            const current = await authClient.getSession();
-            const currentEmail = current.data?.user?.email?.toLowerCase();
+            const firebaseAuth = requireFirebaseAuth();
+            const currentEmail = firebaseAuth.currentUser?.email?.toLowerCase();
             if (currentEmail !== payload.email.toLowerCase()) {
-                const result = await authClient.signUp.email({
-                    name: payload.name,
-                    email: payload.email,
-                    password: payload.password
-                });
-                if (result.error) throw new Error(result.error.message);
+                const credential = await createUserWithEmailAndPassword(firebaseAuth, payload.email, payload.password);
+                await updateProfile(credential.user, { displayName: payload.name });
+                await sendEmailVerification(credential.user);
             }
             const { password, legacyPassword, ...profile } = payload;
             const result = await api.register({
@@ -62,8 +68,7 @@ export function AuthProvider({ children }) {
             return result.user;
         },
         logout: async () => {
-            const result = await authClient.signOut();
-            if (result.error) throw new Error(result.error.message);
+            if (auth) await signOut(auth);
             setUser(null);
         }
     }), [user, ready]);

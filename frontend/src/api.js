@@ -1,5 +1,5 @@
 // All talking to the back end happens here. In dev, Vite proxies /api to the Node server.
-import { authClient } from "./auth.js";
+import { auth } from "./auth.js";
 
 const BASE = import.meta.env.VITE_API_URL || "/api";
 
@@ -14,8 +14,7 @@ export class ApiError extends Error {
 async function request(path, { method = "GET", body, signal, blob = false } = {}) {
     const headers = {};
     if (body) headers["Content-Type"] = "application/json";
-    const { data: sessionData } = await authClient.getSession();
-    const token = sessionData?.session?.token;
+    const token = await auth?.currentUser?.getIdToken();
     if (token) headers.Authorization = `Bearer ${token}`;
 
     let response;

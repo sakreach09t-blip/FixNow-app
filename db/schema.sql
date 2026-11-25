@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS technician_services (
 CREATE TABLE IF NOT EXISTS users (
     id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     auth_subject  text,
+    auth_provider text NOT NULL DEFAULT 'neon',
     role          text NOT NULL CHECK (role IN ('customer', 'technician', 'admin')),
     name          text NOT NULL,
     email         text NOT NULL,
@@ -68,6 +69,10 @@ CREATE TABLE IF NOT EXISTS users (
     created_at    timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_subject text;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_provider text NOT NULL DEFAULT 'neon';
+ALTER TABLE users DROP CONSTRAINT IF EXISTS users_auth_provider_check;
+ALTER TABLE users
+    ADD CONSTRAINT users_auth_provider_check CHECK (auth_provider IN ('neon', 'firebase'));
 ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
 ALTER TABLE users
