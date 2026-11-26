@@ -7,11 +7,12 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { rules } from "../utils.js";
 
 export default function Login() {
-    const { user, login } = useAuth();
+    const { user, login, resetPassword } = useAuth();
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const form = useForm({ email: "", password: "" });
     const [error, setError] = useState("");
+    const [resetMessage, setResetMessage] = useState("");
     const [busy, setBusy] = useState(false);
 
     useEffect(() => { document.title = "Sign in | FixNow"; }, []);
@@ -19,6 +20,7 @@ export default function Login() {
     const onSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setResetMessage("");
         if (!form.validate({ email: rules.email, password: rules.required("Password") })) return;
         setBusy(true);
         try {
@@ -27,6 +29,21 @@ export default function Login() {
             navigate(/^\/[a-z0-9\-/]*$/i.test(next) && !next.startsWith("//") ? next : signedInUser.role === "admin" ? "/admin" : "/my-bookings");
         } catch (err) {
             setError(err.message);
+            setBusy(false);
+        }
+    };
+
+    const onResetPassword = async () => {
+        setError("");
+        setResetMessage("");
+        if (!form.validate({ email: rules.email })) return;
+        setBusy(true);
+        try {
+            await resetPassword(form.values.email);
+            setResetMessage("If an account exists for that email, a password reset email has been sent.");
+        } catch (err) {
+            setError(err.message);
+        } finally {
             setBusy(false);
         }
     };
@@ -52,6 +69,10 @@ export default function Login() {
                                 <Field id="l-email" name="email" label="Email address" error={form.errors.email}><input {...form.input("email", "l")} type="email" autoComplete="email" /></Field>
                                 <Field id="l-password" name="password" label="Password" error={form.errors.password}><input {...form.input("password", "l")} type="password" autoComplete="current-password" /></Field>
                             </div>
+                            <p className="form-note" style={{ marginTop: 12, textAlign: "right" }}>
+                                <button className="text-link" style={{ marginTop: 0 }} type="button" onClick={onResetPassword} disabled={busy}>Forgot password?</button>
+                            </p>
+                            {resetMessage && <p className="form-note" role="status">{resetMessage}</p>}
                             <div className="form-actions"><button className="button button-primary button-large" type="submit" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button></div>
                             <p className="form-note" style={{ marginTop: 18 }}>New to FixNow? <Link to="/join" style={{ color: "var(--color-primary)" }}>Create an account</Link></p>
                         </form>

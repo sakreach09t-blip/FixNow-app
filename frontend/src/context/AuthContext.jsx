@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, updateProfile } from "@firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from "@firebase/auth";
 import { ApiError, api } from "../api.js";
 import { auth, requireFirebaseAuth } from "../auth.js";
 
@@ -45,6 +45,9 @@ export function AuthProvider({ children }) {
 
     const value = useMemo(() => ({
         user, ready,
+        resetPassword: async (email) => {
+            await sendPasswordResetEmail(requireFirebaseAuth(), email.trim());
+        },
         login: async (email, password) => {
             await signInWithEmailAndPassword(requireFirebaseAuth(), email, password);
             const profile = await api.me();
